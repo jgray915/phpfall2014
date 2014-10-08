@@ -13,7 +13,16 @@ and open the template in the editor.
         <?php
             error_reporting(E_ALL);
             ini_set('display_errors', 1);
-            echo("Hello, world!");
+            
+            $d = dir(".");
+            
+            while (false !== ($f = $d->read())) 
+            {
+                if(strpos($f,"week") !== false){
+                    echo "<p><a href='./".$f."'>".$f."</a></p>";
+                }
+            }
+             
             phpinfo();
         ?>
     </body>
