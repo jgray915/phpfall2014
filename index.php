@@ -19,7 +19,8 @@ and open the template in the editor.
             while (false !== ($f = $d->read())) 
             {
                 if(strpos($f,"week") !== false){
-                    echo "<p><a href='./".$f."'>".$f."</a></p>";
+                    echo "<p><a href='./".$f."/demo'>".$f." demo</a></p>";
+                    echo "<p><a href='./".$f."/lab'>".$f." lab</a></p>";
                 }
             }
              
