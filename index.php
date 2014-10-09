@@ -7,7 +7,7 @@ and open the template in the editor.
 <html>
     <head>
         <meta charset="UTF-8">
-        <title></title>
+        <title>Class Home</title>
     </head>
     <body>
         <?php
@@ -24,7 +24,6 @@ and open the template in the editor.
                 }
             }
              
-            phpinfo();
         ?>
     </body>
 </html>
