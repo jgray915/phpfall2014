@@ -10,8 +10,27 @@ and open the template in the editor.
         <title>Week Two</title>
     </head>
     <body>
+        
+        <h1>Form</h1>
+        <form action="#">
+            Name: <input type="text" name="name" />
+            <input type="submit" />
+        </form>
         <?php
-        // put your code here
+            $input = filter_input(INPUT_GET, "name");
+            
+            if($input == 1)
+            {
+                echo "<p>Entered a one.</p>";
+            }
+            else if($input == 2)
+            {
+                echo "<p>Entered a two.</p>";
+            }
+            else 
+            {
+                echo "<p>Did not enter a one or two.</p>";
+            }
         ?>
     </body>
 </html>
