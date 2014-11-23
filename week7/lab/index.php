@@ -33,44 +33,59 @@ found then the user entered the correct email and password.
         <meta charset="UTF-8">
         <title></title>
         <style>
-            #wrapper{
+            #signup, #login, #testing{
                 width:500px;
-                margin:auto;
+                margin:1em auto;
                 border:1px solid black;
                 background-color: lightblue;
                 padding: 1em;
             }
-            #message{
+			#login
+			{
+				background-color: lightgreen;
+			}
+			#testing
+			{
+				background-color: pink;
+			}
+            .message{
                 
             }
         </style>
     </head>
     <body>
-        <div id="wrapper">
+        <div id="signup">
             <h3>Please Sign Up:</h3>
             <form action="#" method ="post">
                 <label>Email:</label><br>
                 <input type="text" name="email" value="<?php if(isset($_POST['email']))echo $_POST['email']; ?>"/><br><br>
                 <label>Password:</label><br>
-                <input type="text" name="password"><br><br>
+                <input type="password" name="password"><br><br>
                 <input type="submit">
             </form>
             <?php
+				include("functions.php");
+				
                 if(isset($_POST['email']) && isset($_POST['password'])){
                     $email = $_POST['email'];
                     $password = $_POST['password'];
-                    $message = "";
+					$messages = array();
                     $error = false;
 
-                    if ( filter_var($email, FILTER_VALIDATE_EMAIL) === false )
+                    if ( validateEmail($email) === false )
                     {
                         $error = true;
-                        $message = "Must enter valid email.<br>";
+                        array_push($messages, "Must enter valid email.<br>");
                     }
-                    if ( strlen($password) < 4 )
+                    if ( validatePassword($password) === false)
                     {
                         $error = true;
-                        $message = "Password must be at least 4 characters.<br>";
+                        array_push($messages, "Password must be at least 4 characters.<br>");
+                    }
+					if ( checkEmail($email) === true)
+                    {
+                        $error = true;
+                        array_push($messages, "Email already exists.<br>");
                     }
                     if($error == false)
                     {
@@ -83,13 +98,69 @@ found then the user entered the correct email and password.
                         
                         if ( $dbs->execute()  && $dbs->rowCount() > 0)  
                         {
-                            $message = "Signed up successfully.";
+                            array_push($messages, "Signed up successfully.");
                         }
                     }
                     
-                    echo '<p id="message">', $message, '</p>';
+					foreach($messages as $message)
+					{
+						echo '<p class="message">', $message, '</p>';
+					}
                 }
             ?>
         </div>
+		
+		<div id="login">
+            <h3>Please Log In:</h3>
+            <form action="#" method ="post">
+                <label>Email:</label><br>
+                <input type="text" name="email2" value="<?php if(isset($_POST['email2']))echo $_POST['email2']; ?>"/><br><br>
+                <label>Password:</label><br>
+                <input type="password" name="password2"><br><br>
+                <input type="submit">
+            </form>
+            <?php
+                if(isset($_POST['email2']) && isset($_POST['password2'])){
+                    $email = $_POST['email2'];
+                    $password = $_POST['password2'];
+					$messages = array();
+                    $error = false;
+
+					if ( checkLogin($email, $password) === false)
+                    {
+                        echo '<p class="message">Email or password incorrect.</p>';
+                    }
+                    else
+					{
+						echo "Logged in successfully.";
+                    }
+                }
+            ?>
+        </div>
+		
+		<!--
+		
+		<div id="testing">
+            <h3>TESTING</h3>
+            <?php
+				$db = new PDO("mysql:host=localhost;dbname=phpclassfall2014", "root", "");
+				$dbs = $db->prepare("select * from signup");
+				
+				if ( $dbs->execute()  && $dbs->rowCount() > 0) 
+				{
+					foreach($dbs->fetchAll() as $row)
+					{
+						echo '<p>'.$row['email'].' -- '.$row['password'].'</p>';
+					}
+				}
+				else
+				{
+					echo "Database error.";
+				}
+            ?>
+        </div>
+		
+		-->
+		
     </body>
 </html>
